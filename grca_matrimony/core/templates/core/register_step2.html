@@ -1,0 +1,121 @@
+{% extends 'core/base.html' %}
+{% block content %}
+    <h1 class="text-center mb-4 clr-brown">Register - Step 2: General Information</h1>
+    <div class="form-container">
+        <form method="post" id="registerForm">
+            {% csrf_token %}
+            <input type="hidden" name="step" value="2">
+            
+            <h3 class="clr-brown">User Details</h3>
+            {% for field in user_form %}
+                <div class="mb-3">
+                    <label class="form-label {% if field.field.required %}required{% endif %}" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <small class="text-danger">{{ field.errors }}</small>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            <h3 class="clr-brown">General Information</h3>
+            {% for field in general_form %}
+                {% if field.name != 'visa_status' and field.name != 'visa_other' and field.name != 'referred_by' and field.name != 'confirmation_code' %}
+                    <div class="mb-3">
+                        <label class="form-label {% if field.field.required %}required{% endif %}" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <small class="text-danger">{{ field.errors }}</small>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            
+            <div class="mb-3">
+                <label class="form-label required" for="{{ general_form.referred_by.id_for_label }}">Referred By</label>
+                {{ general_form.referred_by }}
+                <p id="codeSentMessage" style="color: #000; display: none; margin-top: 5px;">Code has been sent.</p>
+                <p id="codeErrorMessage" style="color: #AF6626; display: none; margin-top: 5px;"></p>
+                {% if general_form.referred_by.errors %}
+                    <small class="text-danger">{{ general_form.referred_by.errors }}</small>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label required" for="{{ general_form.confirmation_code.id_for_label }}">{{ general_form.confirmation_code.label }}</label>
+                {{ general_form.confirmation_code }}
+                {% if general_form.confirmation_code.errors %}
+                    <small class="text-danger">{{ general_form.confirmation_code.errors }}</small>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label" for="{{ general_form.visa_status.id_for_label }}">Visa Status</label>
+                {{ general_form.visa_status }}
+                <div id="visa_other" style="display: none; margin-top: 10px;">
+                    {{ general_form.visa_other }}
+                </div>
+                {% if general_form.visa_status.errors %}
+                    <small class="text-danger">{{ general_form.visa_status.errors }}</small>
+                {% endif %}
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100">Next</button>
+        </form>
+        
+        <!-- {% if messages %}
+            <div class="mt-3">
+                {% for message in messages %}
+                    <p class="{% if message.tags == 'success' %}text-success{% else %}text-danger{% endif %}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %} -->
+    </div>
+    
+    <script>
+        document.querySelector('#id_referred_by').addEventListener('change', function() {
+            const referredById = this.value;
+            const codeSentMessage = document.querySelector('#codeSentMessage');
+            const codeErrorMessage = document.querySelector('#codeErrorMessage');
+            
+            console.log('Referred By selected:', referredById);  // Debug: Check value
+            
+            codeSentMessage.style.display = 'none';
+            codeErrorMessage.style.display = 'none';
+            
+            if (referredById) {
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '{% url "send_referral_code" %}', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                
+                xhr.onload = function() {
+                    console.log('AJAX Response:', xhr.responseText);  // Debug: Log response
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.status === 'success') {
+                            codeSentMessage.style.display = 'block';
+                        } else {
+                            codeErrorMessage.textContent = response.message;
+                            codeErrorMessage.style.display = 'block';
+                        }
+                    } else {
+                        codeErrorMessage.textContent = 'Server error occurred.';
+                        codeErrorMessage.style.display = 'block';
+                    }
+                };
+                
+                xhr.onerror = function() {
+                    console.log('AJAX Error:', xhr.statusText);  // Debug: Log error
+                    codeErrorMessage.textContent = 'Request failed.';
+                    codeErrorMessage.style.display = 'block';
+                };
+                
+                xhr.send('referred_by_id=' + encodeURIComponent(referredById));
+            }
+        });
+
+        document.querySelector('#id_visa_status').addEventListener('change', function() {
+            document.querySelector('#visa_other').style.display = this.value === 'Other' ? 'block' : 'none';
+        });
+    </script>
+{% endblock %}

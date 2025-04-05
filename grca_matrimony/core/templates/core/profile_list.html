@@ -1,0 +1,169 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Profiles - GRCA Matrimony{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="text-center mb-5 clr-orange">Profiles</h1>
+
+    <!-- Filter Form -->
+    <div class="form-container mb-4">
+        <form method="get" class="row g-3 justify-content-center">
+            <div class="col-md-3">
+                <input type="text" name="search" class="form-control" placeholder="Search by name" value="{{ request.GET.search }}">
+            </div>
+            <div class="col-md-3">
+                <select name="age" class="form-select">
+                    <option value="">Select Age Range</option>
+                    <option value="18-25" {% if request.GET.age == "18-25" %}selected{% endif %}>18-25</option>
+                    <option value="26-35" {% if request.GET.age == "26-35" %}selected{% endif %}>26-35</option>
+                    <option value="36-50" {% if request.GET.age == "36-50" %}selected{% endif %}>36-50</option>
+                    <option value="51-100" {% if request.GET.age == "51-100" %}selected{% endif %}>51-100</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="citizen" class="form-select">
+                    <option value="">Citizen Filter</option>
+                    <option value="Y" {% if request.GET.citizen == "Y" %}selected{% endif %}>Yes</option>
+                    <option value="N" {% if request.GET.citizen == "N" %}selected{% endif %}>No</option>
+                </select>
+            </div>
+            <div class="col-md-2 text-center">
+                <button type="submit" class="btn btn-primary w-100">Filter</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Profile Cards -->
+    <div class="row">
+        {% for profile in page_obj %}
+            <div class="col-md-4 mb-4">
+                <div class="card p-3 h-100 d-flex flex-column justify-content-center">
+                    <div class="row align-items-center">
+                        <div class="col-4">
+                            {% if profile.full_body_image_exists %}
+                                <img src="{{ profile.full_body_image.url }}" class="img-fluid rounded clickable-image" alt="{{ profile.name }} - Full Body Image" data-bs-toggle="modal" data-bs-target="#imageModal" data-image="{{ profile.full_body_image.url }}">
+                            {% else %}
+                                <img src="{% static 'images/default_full_body.jpg' %}" class="img-fluid rounded clickable-image" alt="Default Full Body Image" data-bs-toggle="modal" data-bs-target="#imageModal" data-image="{% static 'images/default_full_body.jpg' %}">
+                            {% endif %}
+                        </div>
+                        <div class="col-8">
+                            <h5 class="clr-orange mb-2">{{ profile.name }}</h5>
+                            <p class="clr-brown mb-1"><strong>Age:</strong> {{ profile.age }}</p>
+                            <p class="clr-brown mb-1"><strong>Education:</strong> {{ profile.education|default:"Not specified" }}</p>
+                            <p class="clr-brown mb-3"><strong>Occupation:</strong> {{ profile.occupation|default:"Not specified" }}</p>
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'generate_biodata' profile.pk %}" class="btn btn-primary btn-sm">Biodata</a>
+                                <a href="{% url 'profile_detail' profile.pk %}" class="btn btn-primary btn-sm">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <p class="text-center clr-brown">No profiles found.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.age %}&age={{ request.GET.age }}{% endif %}{% if request.GET.citizen %}&citizen={{ request.GET.citizen }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}" aria-label="Previous">
+                            <span aria-hidden="true">« Previous</span>
+                        </a>
+                    </li>
+                {% endif %}
+                {% for num in page_obj.paginator.page_range %}
+                    <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                        <a class="page-link" href="?page={{ num }}{% if request.GET.age %}&age={{ request.GET.age }}{% endif %}{% if request.GET.citizen %}&citizen={{ request.GET.citizen }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">{{ num }}</a>
+                    </li>
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.age %}&age={{ request.GET.age }}{% endif %}{% if request.GET.citizen %}&citizen={{ request.GET.citizen }}{% endif %}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}" aria-label="Next">
+                            <span aria-hidden="true">Next »</span>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+</div>
+
+<!-- Bootstrap Modal for Image Popup -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header text-white" style="background: #F89119;">
+                <h5 class="modal-title" id="imageModalLabel">Image Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="" class="img-fluid rounded" id="modalImage" alt="Large Image">
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .card {
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+    .card:hover {
+        transform: scale(1.03);
+    }
+    .clickable-image {
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+    .clickable-image:hover {
+        transform: scale(1.05);
+    }
+    .clr-orange {
+        color: #F89119;
+    }
+    .clr-brown {
+        color: #AF6626;
+    }
+    .h-100 {
+        min-height: 250px; /* Adjust this value as needed */
+    }
+    .d-flex {
+        display: flex;
+    }
+    .flex-column {
+        flex-direction: column;
+    }
+    .justify-content-center {
+        justify-content: center;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const images = document.querySelectorAll('.clickable-image');
+        const modalImage = document.getElementById('modalImage');
+
+        images.forEach(image => {
+            image.addEventListener('click', function () {
+                const largeImageUrl = this.getAttribute('data-image');
+                modalImage.src = largeImageUrl;
+            });
+        });
+    });
+</script>
+{% endblock %}

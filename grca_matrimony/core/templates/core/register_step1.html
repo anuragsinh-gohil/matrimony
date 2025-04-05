@@ -1,0 +1,16 @@
+{% extends 'core/base.html' %}
+{% block content %}
+    <h1 class="text-center mb-4" style="color: #87CEEB;">Register - Step 1: Terms & Conditions</h1>
+    <div class="form-container">
+        <form method="post">
+            {% csrf_token %}
+            <p style="color: #333;">By registering, you agree to our terms of service. We value your privacy and commitment.</p>
+            <div class="form-check mb-3">
+                <input type="checkbox" class="form-checkbox" id="agree" name="agree" required>
+                <label class="form-check-label required" for="agree">I Agree</label>
+            </div>
+            <input type="hidden" name="step" value="1">
+            <button type="submit" class="btn btn-primary w-100">Next</button>
+        </form>
+    </div>
+{% endblock %}

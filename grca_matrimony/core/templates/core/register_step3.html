@@ -1,0 +1,38 @@
+{% extends 'core/base.html' %}
+{% block content %}
+    <h1 class="text-center mb-4 clr-orange">Register - Step 3: Family Details & Photos</h1>
+    <div class="form-container">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="step" value="3">
+            <h3 class="clr-orange">Father Details</h3>
+            {% for field in family_form %}
+                {% if 'father' in field.name or 'grand' in field.name %}
+                    <div class="mb-3">
+                        <label class="form-label {% if field.field.required %}required{% endif %}" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <h3 class="clr-orange">Mother Details</h3>
+            {% for field in family_form %}
+                {% if 'mother' in field.name %}
+                    <div class="mb-3">
+                        <label class="form-label {% if field.field.required %}required{% endif %}" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <h3 class="clr-orange">Photos</h3>
+            {% for field in family_form %}
+                {% if 'image' in field.name %}
+                    <div class="mb-3">
+                        <label class="form-label {% if field.field.required %}required{% endif %}" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <button type="submit" class="btn btn-primary w-100">Register</button>
+        </form>
+    </div>
+{% endblock %}

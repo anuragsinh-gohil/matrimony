@@ -1,0 +1,237 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}GRCA Matrimony - Home{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section text-center py-5" style="background: linear-gradient(135deg, #F89119, #AF6626); color: white; position: relative;">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-3 animate__animated animate__zoomIn">Welcome to GRCA Matrimony</h1>
+        <p class="lead mb-4 animate__animated animate__fadeInUp" style="animation-delay: 0.3s;">Uniting Gujarati Rajput hearts with tradition, love, and celebration.</p>
+        <div class="d-flex justify-content-center gap-3 animate__animated animate__pulse" style="animation-delay: 0.6s;">
+            <a href="{% url 'register' %}" class="btn btn-light btn-lg fw-bold">Get Started</a>
+            <a href="{% url 'login' %}" class="btn btn-outline-light btn-lg fw-bold">Sign In</a>
+        </div>
+    </div>
+    <div class="hero-overlay animate__animated animate__fadeIn" style="animation-delay: 0.9s;">
+        <i class="fas fa-heart fa-3x clr-orange"></i>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5 clr-orange fw-bold animate__animated animate__bounceIn">Discover Your Journey</h2>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm text-center feature-card animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
+                    <div class="card-body">
+                        <i class="fas fa-user-friends fa-3x clr-orange mb-3"></i>
+                        <h3 class="card-title clr-orange">Find Your Soulmate</h3>
+                        <p class="clr-brown">Connect with like-minded Gujarati Rajputs who share your values and dreams.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm text-center feature-card animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+                    <div class="card-body">
+                        <i class="fas fa-shield-alt fa-3x clr-orange mb-3"></i>
+                        <h3 class="card-title clr-orange">Trusted Platform</h3>
+                        <p class="clr-brown">A safe, verified space to build lasting relationships with confidence.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm text-center feature-card animate__animated animate__fadeInUp" style="animation-delay: 0.3s;">
+                    <div class="card-body">
+                        <i class="fas fa-calendar-alt fa-3x clr-orange mb-3"></i>
+                        <h3 class="card-title clr-orange">Events & Meetups</h3>
+                        <p class="clr-brown">Celebrate culture and meet potential partners at our exclusive events.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm text-center feature-card animate__animated animate__fadeInUp" style="animation-delay: 0.4s;">
+                    <div class="card-body">
+                        <i class="fas fa-sign-in-alt fa-3x clr-orange mb-3"></i>
+                        <h3 class="card-title clr-orange">Join Today</h3>
+                        <p class="clr-brown">Step into a vibrant community eager to welcome you.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Interactive Community Section -->
+<section class="community-section py-5 bg-white">
+    <div class="container">
+        <h2 class="text-center mb-5 clr-orange fw-bold animate__animated animate__bounceIn">Our Vibrant Community</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm community-card animate__animated animate__flipInX" style="animation-delay: 0.1s;">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users fa-4x clr-orange mb-3"></i>
+                        <h5 class="card-title clr-orange">Cultural Gatherings</h5>
+                        <p class="clr-brown">Join festive events that honor our Rajput heritage.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm community-card animate__animated animate__flipInX" style="animation-delay: 0.2s;">
+                    <div class="card-body text-center">
+                        <i class="fas fa-heartbeat fa-4x clr-orange mb-3"></i>
+                        <h5 class="card-title clr-orange">Success Stories</h5>
+                        <p class="clr-brown">Be inspired by couples who found love with GRCA.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm community-card animate__animated animate__flipInX" style="animation-delay: 0.3s;">
+                    <div class="card-body text-center">
+                        <i class="fas fa-hands-helping fa-4x clr-orange mb-3"></i>
+                        <h5 class="card-title clr-orange">Support Network</h5>
+                        <p class="clr-brown">A family-like community here to guide you.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sticky CTA Button -->
+<div class="sticky-cta">
+    <a href="{% url 'register' %}" class="btn btn-primary btn-lg fw-bold animate__animated animate__pulse animate__infinite">Start Your Journey</a>
+</div>
+
+{% endblock %}
+
+<style>
+    /* Hero Section */
+    .hero-section {
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+    .hero-overlay {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        opacity: 0.3;
+    }
+    .hero-section .btn-light {
+        color: #F89119;
+    }
+    .hero-section .btn-outline-light:hover {
+        background-color: #fff;
+        color: #F89119;
+    }
+
+    /* Features Section */
+    .feature-card {
+        transition: all 0.3s ease;
+        background: #fff;
+        border-radius: 15px;
+    }
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        background: #FFF5E6; /* Light orange tint */
+    }
+    .feature-card i {
+        transition: transform 0.3s ease;
+    }
+    .feature-card:hover i {
+        transform: scale(1.2);
+    }
+
+    /* Community Section */
+    .community-card {
+        transition: all 0.3s ease;
+        border-radius: 15px;
+    }
+    .community-card:hover {
+        transform: rotate(2deg) scale(1.05);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+    .community-card i {
+        transition: color 0.3s ease;
+    }
+    .community-card:hover i {
+        color: #fff;
+        background: #F89119;
+        border-radius: 50%;
+        padding: 10px;
+    }
+
+    /* Sticky CTA */
+    .sticky-cta {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+    .sticky-cta .btn-primary {
+        background-color: #F89119;
+        border: none;
+        padding: 15px 25px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    .sticky-cta .btn-primary:hover {
+        background-color: #AF6626;
+    }
+
+    /* Colors */
+    .clr-orange {
+        color: #F89119;
+    }
+    .clr-brown {
+        color: #AF6626;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .hero-section {
+            min-height: 50vh;
+        }
+        .hero-section h1 {
+            font-size: 2.5rem;
+        }
+        .hero-section p {
+            font-size: 1rem;
+        }
+        .hero-overlay i {
+            font-size: 2rem;
+        }
+        .feature-card, .community-card {
+            margin-bottom: 20px;
+        }
+        .sticky-cta {
+            bottom: 10px;
+            right: 10px;
+        }
+        .sticky-cta .btn-lg {
+            padding: 10px 15px;
+            font-size: 1rem;
+        }
+    }
+    @media (max-width: 576px) {
+        .hero-section h1 {
+            font-size: 2rem;
+        }
+        .hero-section .d-flex {
+            flex-direction: column;
+            gap: 10px;
+        }
+        .hero-section .btn-lg {
+            width: 100%;
+        }
+        .community-card:hover {
+            transform: scale(1.03);
+        }
+    }
+</style>

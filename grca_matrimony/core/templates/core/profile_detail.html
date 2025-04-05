@@ -1,0 +1,266 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}{{ profile.name }}'s Profile - GRCA Matrimony{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="text-center mb-5" style="color: #F89119; font-family: 'Arial', sans-serif; font-weight: bold;">{{ profile.name }}'s Profile</h1>
+    
+    <div class="form-container shadow-lg">
+        <div class="p-4 bg-light rounded-top" style="background: linear-gradient(135deg, #F89119, #AF6626); color: white;">
+            <h3 class="mb-0">{{ profile.name }}</h3>
+        </div>
+        
+        <div class="row p-4">
+            <!-- Left Column: Images -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h4 class="card-title" style="color: #F89119;">Profile Images</h4>
+                        <div class="image-section">
+                            {% if profile.full_body_image_exists %}
+                                <img src="{{ profile.full_body_image.url }}" class="img-fluid mb-3 clickable-image rounded" alt="Full Body Image" data-bs-toggle="modal" data-bs-target="#imageModal" data-image="{{ profile.full_body_image.url }}">
+                            {% else %}
+                                <img src="{% static 'images/default_full_body.jpg' %}" class="img-fluid mb-3 clickable-image rounded" alt="Default Full Body Image" data-bs-toggle="modal" data-bs-target="#imageModal" data-image="{% static 'images/default_full_body.jpg' %}">
+                            {% endif %}
+                            
+                            {% if profile.half_body_image_exists %}
+                                <img src="{{ profile.half_body_image.url }}" class="img-fluid mb-3 clickable-image rounded" alt="Half Body Image" data-bs-toggle="modal" data-bs-target="#imageModal" data-image="{{ profile.half_body_image.url }}">
+                            {% else %}
+                                <img src="{% static 'images/default_half_body.jpg' %}" class="img-fluid mb-3 clickable-image rounded" alt="Default Half Body Image" data-bs-toggle="modal" data-bs-target="#imageModal" data-image="{% static 'images/default_half_body.jpg' %}">
+                            {% endif %}
+                            
+                            {% if profile.extra_image1_exists %}
+                                <img src="{{ profile.extra_image1.url }}" class="img-fluid mb-3 clickable-image rounded" alt="Extra Image 1" data-bs-toggle="modal" data-bs-target="#imageModal" data-image="{{ profile.extra_image1.url }}">
+                            {% else %}
+                                <p class="text-muted">No extra image 1 uploaded.</p>
+                            {% endif %}
+                            
+                            {% if profile.extra_image2_exists %}
+                                <img src="{{ profile.extra_image2.url }}" class="img-fluid mb-3 clickable-image rounded" alt="Extra Image 2" data-bs-toggle="modal" data-bs-target="#imageModal" data-image="{{ profile.extra_image2.url }}">
+                            {% else %}
+                                <p class="text-muted">No extra image 2 uploaded.</p>
+                            {% endif %}
+                            
+                            {% if profile.extra_image3_exists %}
+                                <img src="{{ profile.extra_image3.url }}" class="img-fluid mb-3 clickable-image rounded" alt="Extra Image 3" data-bs-toggle="modal" data-bs-target="#imageModal" data-image="{{ profile.extra_image3.url }}">
+                            {% else %}
+                                <p class="text-muted">No extra image 3 uploaded.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Profile Details -->
+            <div class="col-md-8">
+                <!-- Personal Information Section -->
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-header text-white" style="background: #F89119;">
+                        <h4 class="mb-0">Personal Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <dl class="row mb-0">
+                            <dt class="col-sm-4">Email:</dt>
+                            <dd class="col-sm-8">{{ request.user.email }}</dd>
+
+                            <dt class="col-sm-4">Phone:</dt>
+                            <dd class="col-sm-8">{{ profile.phone_number }}</dd>
+
+                            <dt class="col-sm-4">About Yourself:</dt>
+                            <dd class="col-sm-8">{{ profile.about_yourself }}</dd>
+
+                            <dt class="col-sm-4">Current Address:</dt>
+                            <dd class="col-sm-8">{{ profile.current_address }}</dd>
+
+                            <dt class="col-sm-4">Gender:</dt>
+                            <dd class="col-sm-8">{{ profile.get_gender_display }}</dd>
+
+                            <dt class="col-sm-4">Birth Date:</dt>
+                            <dd class="col-sm-8">{{ profile.birth_date }}</dd>
+
+                            <dt class="col-sm-4">Age:</dt>
+                            <dd class="col-sm-8">{{ profile.age }}</dd>
+
+                            <dt class="col-sm-4">Marital Status:</dt>
+                            <dd class="col-sm-8">{{ profile.get_marital_status_display }}</dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <!-- Additional Details Section -->
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-header text-white" style="background: #AF6626;">
+                        <h4 class="mb-0">Additional Details</h4>
+                    </div>
+                    <div class="card-body">
+                        <dl class="row mb-0">
+                            <dt class="col-sm-4">Canada/US Citizen:</dt>
+                            <dd class="col-sm-8">{{ profile.get_canada_us_citizen_display }}</dd>
+
+                            <dt class="col-sm-4">Visa Status:</dt>
+                            <dd class="col-sm-8">{{ profile.visa_status }}</dd>
+
+                            <dt class="col-sm-4">Height:</dt>
+                            <dd class="col-sm-8">{{ profile.height }} cm</dd>
+
+                            <dt class="col-sm-4">Weight:</dt>
+                            <dd class="col-sm-8">{{ profile.weight }} kg</dd>
+
+                            <dt class="col-sm-4">Birth Time:</dt>
+                            <dd class="col-sm-8">{{ profile.birth_time }}</dd>
+
+                            <dt class="col-sm-4">Education:</dt>
+                            <dd class="col-sm-8">{{ profile.education }}</dd>
+
+                            <dt class="col-sm-4">Occupation:</dt>
+                            <dd class="col-sm-8">{{ profile.occupation }}</dd>
+
+                            <dt class="col-sm-4">Food Preference:</dt>
+                            <dd class="col-sm-8">{{ profile.get_food_preference_display }}</dd>
+
+                            <dt class="col-sm-4">City:</dt>
+                            <dd class="col-sm-8">{{ profile.city }}</dd>
+
+                            <dt class="col-sm-4">State:</dt>
+                            <dd class="col-sm-8">{{ profile.state }}</dd>
+
+                            <dt class="col-sm-4">Siblings:</dt>
+                            <dd class="col-sm-8">{{ profile.siblings }}</dd>
+
+                            <dt class="col-sm-4">Native:</dt>
+                            <dd class="col-sm-8">{{ profile.native }}</dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <!-- Family Information Section -->
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-header text-white" style="background: #F89119;">
+                        <h4 class="mb-0">Family Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <dl class="row mb-0">
+                            <dt class="col-sm-4">Father's Name:</dt>
+                            <dd class="col-sm-8">{{ profile.father_name }}</dd>
+
+                            <dt class="col-sm-4">Father's Native Place:</dt>
+                            <dd class="col-sm-8">{{ profile.father_native }}</dd>
+
+                            <dt class="col-sm-4">Father's Phone Number:</dt>
+                            <dd class="col-sm-8">{{ profile.father_number }}</dd>
+
+                            <dt class="col-sm-4">Father's Location:</dt>
+                            <dd class="col-sm-8">{{ profile.father_location }}</dd>
+
+                            <dt class="col-sm-4">Father's Occupation:</dt>
+                            <dd class="col-sm-8">{{ profile.father_occupation }}</dd>
+
+                            <dt class="col-sm-4">Father's Siblings:</dt>
+                            <dd class="col-sm-8">{{ profile.father_siblings }}</dd>
+
+                            <dt class="col-sm-4">Father's Maternal Info:</dt>
+                            <dd class="col-sm-8">{{ profile.father_maternal }}</dd>
+
+                            <dt class="col-sm-4">Grandfather's Name:</dt>
+                            <dd class="col-sm-8">{{ profile.grandfather_name }}</dd>
+
+                            <dt class="col-sm-4">Grandmother's Name:</dt>
+                            <dd class="col-sm-8">{{ profile.grandmother_name }}</dd>
+
+                            <dt class="col-sm-4">Mother's Name:</dt>
+                            <dd class="col-sm-8">{{ profile.mother_name }}</dd>
+
+                            <dt class="col-sm-4">Mother's Father Name:</dt>
+                            <dd class="col-sm-8">{{ profile.mother_father_name }}</dd>
+
+                            <dt class="col-sm-4">Mother's Maternal Info:</dt>
+                            <dd class="col-sm-8">{{ profile.mother_maternal }}</dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <!-- Back Button -->
+                <div class="text-end">
+                    <a href="{% url 'profile_list' %}" class="btn btn-primary btn-lg">Back to Profiles</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap Modal for Image Popup -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header text-white" style="background: #F89119;">
+                <h5 class="modal-title" id="imageModalLabel">Image Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="" class="img-fluid rounded" id="modalImage" alt="Large Image">
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background-color: #fff;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    .image-section img {
+        max-width: 100%;
+        height: auto;
+        border: 2px solid #F89119;
+        /* No hover effect as per your previous request */
+    }
+    .image-section p {
+        color: #AF6626;
+        font-style: italic;
+    }
+    dt {
+        font-weight: 600;
+        color: #AF6626;
+    }
+    dd {
+        color: #AF6626;
+    }
+    .card {
+        transition: all 0.3s ease;
+    }
+    .card:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    .clickable-image {
+        cursor: pointer;
+    }
+    .btn-primary {
+        background-color: #F89119;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1.1rem;
+    }
+    .btn-primary:hover {
+        background-color: #AF6626;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const images = document.querySelectorAll('.clickable-image');
+        const modalImage = document.getElementById('modalImage');
+
+        images.forEach(image => {
+            image.addEventListener('click', function () {
+                const largeImageUrl = this.getAttribute('data-image');
+                modalImage.src = largeImageUrl;
+            });
+        });
+    });
+</script>
+{% endblock %}

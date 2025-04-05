@@ -4,8 +4,3 @@ __pycache__/
 db.sqlite3
 *.log
 grca_matrimony/grca_matrimony/settings.py
-grca_matrimony/media/
-grca_matrimony/core/templates/
-grca_matrimony/core/models.py
-grca_matrimony/core/forms.py
-grca_matrimony/core/views.py
